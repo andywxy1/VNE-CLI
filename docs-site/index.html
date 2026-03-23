@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VNE-CLI Documentation</title>
+<meta name="description" content="VNE-CLI generates complete VoidNovelEngine visual novel projects from novel text using AI. Documentation for humans and AI agents.">
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f6f8fa;
+  --bg-code: #f0f2f5;
+  --text: #1a1a2e;
+  --text-muted: #57606a;
+  --heading: #0d1117;
+  --accent: #2563eb;
+  --accent-light: #dbeafe;
+  --border: #d1d5db;
+  --code-border: #c9cdd3;
+  --success: #16a34a;
+  --success-bg: #dcfce7;
+  --warn: #ca8a04;
+  --warn-bg: #fef9c3;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", "Fira Code", Menlo, Consolas, monospace;
+  --max-width: 960px;
+  --radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --bg-alt: #161b22;
+    --bg-code: #1c2129;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --heading: #f0f6fc;
+    --accent: #58a6ff;
+    --accent-light: #1c3a5f;
+    --border: #30363d;
+    --code-border: #3d444d;
+    --success: #3fb950;
+    --success-bg: #0d2818;
+    --warn: #d29922;
+    --warn-bg: #2d2006;
+  }
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Layout ===== */
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+/* ===== Typography ===== */
+h1, h2, h3, h4 { color: var(--heading); font-weight: 600; line-height: 1.3; }
+h1 { font-size: 2.25rem; margin-bottom: 0.5rem; }
+h2 { font-size: 1.5rem; margin-top: 3rem; margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1.2rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+h4 { font-size: 1.05rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+p { margin-bottom: 1rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong { font-weight: 600; }
+
+/* ===== Navigation ===== */
+nav.toc {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+nav.toc .container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+nav.toc .brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--heading);
+  flex-shrink: 0;
+}
+nav.toc a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 4px 0;
+}
+nav.toc a:hover { color: var(--accent); text-decoration: none; }
+
+/* ===== Hero ===== */
+.hero {
+  padding: 3rem 0 2rem;
+  text-align: center;
+}
+.hero .tagline {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 680px;
+  margin: 0.5rem auto 1.5rem;
+}
+.hero .badges {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.badge--accent {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ===== Sections ===== */
+section { padding: 1rem 0; }
+
+/* ===== Code ===== */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--bg-code);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--code-border);
+}
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+/* Syntax highlighting via CSS classes */
+.kw { color: #d73a49; } /* keywords */
+.str { color: #032f62; } /* strings */
+.cmt { color: #6a737d; } /* comments */
+.fn { color: #6f42c1; } /* functions */
+.typ { color: #005cc5; } /* types */
+.num { color: #005cc5; } /* numbers */
+@media (prefers-color-scheme: dark) {
+  .kw { color: #ff7b72; }
+  .str { color: #a5d6ff; }
+  .cmt { color: #8b949e; }
+  .fn { color: #d2a8ff; }
+  .typ { color: #79c0ff; }
+  .num { color: #79c0ff; }
+}
+
+/* ===== Tables ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.92rem;
+}
+th, td {
+  text-align: left;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+}
+th {
+  background: var(--bg-alt);
+  font-weight: 600;
+  white-space: nowrap;
+}
+td code { font-size: 0.82rem; }
+
+/* ===== Callout boxes ===== */
+.callout {
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+  border-left: 4px solid;
+}
+.callout--info {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+.callout--success {
+  background: var(--success-bg);
+  border-color: var(--success);
+}
+.callout--warn {
+  background: var(--warn-bg);
+  border-color: var(--warn);
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout strong { display: block; margin-bottom: 4px; }
+
+/* ===== Pipeline diagram ===== */
+.pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+.pipeline-step {
+  background: var(--accent-light);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px 20px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 140px;
+}
+.pipeline-arrow {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  padding: 0 8px;
+}
+.pipeline-label {
+  display: block;
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ===== Lists ===== */
+ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+li { margin-bottom: 0.35rem; }
+li > ul, li > ol { margin-top: 0.35rem; margin-bottom: 0; }
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.25rem; }
+  pre { padding: 12px 14px; font-size: 0.8rem; }
+  .pipeline { flex-direction: column; }
+  .pipeline-arrow { transform: rotate(90deg); padding: 4px 0; }
+  nav.toc .container { gap: 12px; }
+}
+
+/* ===== Footer ===== */
+footer {
+  margin-top: 3rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="toc">
+  <div class="container">
+    <span class="brand">VNE-CLI</span>
+    <a href="#quick-start">Quick Start</a>
+    <a href="#for-ai-agents">For AI Agents</a>
+    <a href="#commands">Commands</a>
+    <a href="#providers">Providers</a>
+    <a href="#custom-providers">Custom Providers</a>
+    <a href="#configuration">Configuration</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#flow-format">Flow Format</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="container">
+    <h1>VNE-CLI</h1>
+    <p class="tagline">Generate complete <a href="https://github.com/VoidmatrixHeathcliff/VoidNovelEngine">VoidNovelEngine</a> visual novel projects from novel text using AI.</p>
+    <div class="badges">
+      <span class="badge badge--accent">Python 3.10+</span>
+      <span class="badge">MIT License</span>
+      <span class="badge">pip install vne-cli</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- ===== QUICK START ===== -->
+<section id="quick-start">
+<h2>Quick Start</h2>
+
+<p>Transform a novel into a playable visual novel in three commands:</p>
+
+<pre><code><span class="cmt"># Install</span>
+pip install vne-cli
+
+<span class="cmt"># 1. Extract story structure (characters, scenes, dialogue, choices)</span>
+vne extract novel.txt -o story.json
+
+<span class="cmt"># 2. Generate character sprites and scene backgrounds</span>
+vne generate-assets story.json -o ./assets/
+
+<span class="cmt"># 3. Assemble into a VNE project</span>
+vne assemble story.json --assets ./assets/ -o ./my-vn-project/</code></pre>
+
+<p>The output at <code>./my-vn-project/</code> is a complete VoidNovelEngine project you can open in the VNE editor or run directly.</p>
+
+<h3>Dry Run</h3>
+<p>Preview what each stage will do without making API calls:</p>
+<pre><code>vne extract novel.txt --dry-run
+vne generate-assets story.json --dry-run</code></pre>
+</section>
+
+<!-- ===== FOR AI AGENTS ===== -->
+<section id="for-ai-agents">
+<h2>For AI Agents</h2>
+
+<div class="callout callout--info">
+<strong>If you are an AI assistant helping a user generate a visual novel, here is exactly what to do.</strong>
+<p>Follow the steps below in order. Each step includes the exact command to run and what to expect.</p>
+</div>
+
+<h3>Prerequisites</h3>
+<ol>
+  <li>Ensure Python 3.10+ is installed: <code>python3 --version</code></li>
+  <li>Install VNE-CLI: <code>pip install vne-cli</code></li>
+  <li>Verify installation: <code>vne --version</code></li>
+  <li>The user needs an LLM API key (OpenAI or Anthropic) and an image generation API key (OpenAI/DALL-E or Stability AI)</li>
+</ol>
+
+<h3>Step 1: Configure Providers</h3>
+
+<p>Initialize the global config:</p>
+<pre><code>vne config init --global</code></pre>
+
+<p>This creates <code>~/.vne-cli/config.toml</code>. Edit it to set up providers. Here is a recommended configuration using OpenAI for both LLM and image generation:</p>
+
+<pre><code><span class="cmt"># ~/.vne-cli/config.toml</span>
+
+[providers.llm]
+package = <span class="str">"vne_cli.providers.llm.openai_provider"</span>
+factory = <span class="str">"create_llm_provider"</span>
+model = <span class="str">"gpt-4o"</span>
+
+[providers.image]
+package = <span class="str">"vne_cli.providers.image.dalle_provider"</span>
+factory = <span class="str">"create_image_provider"</span>
+model = <span class="str">"dall-e-3"</span></code></pre>
+
+<p>Set the API key as an environment variable (do not put secrets in config files if possible):</p>
+<pre><code>export VNE_CLI_OPENAI_API_KEY="sk-..."</code></pre>
+
+<p>Alternative: use Anthropic for the LLM:</p>
+<pre><code>[providers.llm]
+package = <span class="str">"vne_cli.providers.llm.anthropic_provider"</span>
+factory = <span class="str">"create_llm_provider"</span>
+model = <span class="str">"claude-sonnet-4-20250514"</span></code></pre>
+<pre><code>export VNE_CLI_ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
+
+<p>Verify the configuration:</p>
+<pre><code>vne config show --resolved</code></pre>
+
+<h3>Step 2: Prepare the Input</h3>
+<p>The user provides a novel as a <code>.txt</code> or <code>.md</code> file. If the novel has chapters, markdown headings (<code>#</code>) will be detected as chapter boundaries. Explicit branching choices can be marked up:</p>
+<pre><code>[CHOICE: What should Elena do?]
+[OPTION: Read the letter immediately]
+[OPTION: Hide it and read later]</code></pre>
+<p>The parser also detects implicit branching cues from narrative patterns.</p>
+
+<h3>Step 3: Extract Story Structure</h3>
+<pre><code>vne extract novel.txt -o story.json --verbose</code></pre>
+
+<p><strong>What this produces:</strong> A <code>story.json</code> file containing extracted characters (with expression variants), scenes, dialogue, narration, branching choices, and cinematic annotations.</p>
+
+<p><strong>Expected duration:</strong> Depends on novel length. A 50,000-word novel takes roughly 2-5 minutes with GPT-4o.</p>
+
+<p>Optional: extract only characters first for review:</p>
+<pre><code>vne extract novel.txt --characters-only -o characters.json</code></pre>
+
+<h3>Step 4: Generate Assets</h3>
+<pre><code>vne generate-assets story.json -o ./assets/ --verbose</code></pre>
+
+<p><strong>What this produces:</strong></p>
+<ul>
+  <li><code>assets/characters/*.png</code> -- Character sprites for each expression variant</li>
+  <li><code>assets/backgrounds/*.png</code> -- Scene background images</li>
+  <li><code>assets/asset-manifest.json</code> -- Progress tracking manifest</li>
+</ul>
+
+<p><strong>Expected duration:</strong> Depends on the number of unique characters and scenes. Typically 5-20 minutes. DALL-E 3 generates one image at a time; Stable Diffusion supports concurrency.</p>
+
+<p><strong>Resume after failure:</strong> If the process crashes or is interrupted, re-run the same command. It reads the manifest and skips already-generated assets.</p>
+
+<p>Options for controlling generation:</p>
+<pre><code><span class="cmt"># Only generate character sprites</span>
+vne generate-assets story.json -o ./assets/ --characters-only
+
+<span class="cmt"># Only generate backgrounds</span>
+vne generate-assets story.json -o ./assets/ --backgrounds-only
+
+<span class="cmt"># Override art style</span>
+vne generate-assets story.json -o ./assets/ --style "watercolor"
+
+<span class="cmt"># Increase concurrency (default: 3)</span>
+vne generate-assets story.json -o ./assets/ --concurrency 5</code></pre>
+
+<h3>Step 5: Assemble the Project</h3>
+<pre><code>vne assemble story.json --assets ./assets/ -o ./my-vn-project/ --verbose</code></pre>
+
+<p><strong>What this produces:</strong> A complete VoidNovelEngine project directory:</p>
+<pre><code>my-vn-project/
+  project.vne              <span class="cmt"># Engine manifest (JSON)</span>
+  main.lua                 <span class="cmt"># Engine entry point</span>
+  application/
+    flow/
+      entry.flow           <span class="cmt"># Entry flow with fade-in</span>
+      ch_001_sc_001.flow   <span class="cmt"># Scene flow files</span>
+      ...
+    resources/
+      characters/          <span class="cmt"># Character sprite PNGs</span>
+      backgrounds/         <span class="cmt"># Background PNGs</span>
+      audio/               <span class="cmt"># Audio files (if any)</span>
+      fonts/               <span class="cmt"># Font files</span>
+    icon/
+      icon.png             <span class="cmt"># Default 64x64 icon</span></code></pre>
+
+<p>Assembly options:</p>
+<pre><code><span class="cmt"># Set game window resolution</span>
+vne assemble story.json --assets ./assets/ -o ./project/ --resolution 1920x1080
+
+<span class="cmt"># Set project title</span>
+vne assemble story.json --assets ./assets/ -o ./project/ --title "The Crystal Kingdom"
+
+<span class="cmt"># Disable cinematic effects</span>
+vne assemble story.json --assets ./assets/ -o ./project/ --no-cinematic
+
+<span class="cmt"># Use minimal cinematic tier</span>
+vne assemble story.json --assets ./assets/ -o ./project/ --cinematic-tier base</code></pre>
+
+<h3>Step 6: Deliver the Result</h3>
+<p>Tell the user their project is at the output directory. They can:</p>
+<ul>
+  <li>Open it in the VoidNovelEngine editor</li>
+  <li>Run it directly with the VNE runtime</li>
+  <li>Edit <code>.flow</code> files manually for fine-tuning (see the <a href="#flow-format">Flow Format</a> section)</li>
+</ul>
+
+<h3>Complete Example: End-to-End</h3>
+<pre><code><span class="cmt"># Setup (one-time)</span>
+pip install vne-cli
+vne config init --global
+<span class="cmt"># Edit ~/.vne-cli/config.toml to set providers (see Step 1)</span>
+export VNE_CLI_OPENAI_API_KEY="sk-..."
+
+<span class="cmt"># Pipeline</span>
+vne extract novel.txt -o story.json
+vne generate-assets story.json -o ./assets/
+vne assemble story.json --assets ./assets/ -o ./my-vn-project/
+
+<span class="cmt"># Done! Project is at ./my-vn-project/</span></code></pre>
+
+<h3>Troubleshooting for AI Agents</h3>
+<table>
+<tr><th>Problem</th><th>Solution</th></tr>
+<tr><td>API key error</td><td>Check <code>VNE_CLI_OPENAI_API_KEY</code> (or the relevant provider key) is set in the environment</td></tr>
+<tr><td>Rate limiting</td><td>VNE-CLI has built-in retry with exponential backoff (3 retries, max 30s delay). If persistent, reduce <code>--concurrency</code></td></tr>
+<tr><td>Asset generation interrupted</td><td>Re-run the same <code>vne generate-assets</code> command. It resumes from the manifest automatically</td></tr>
+<tr><td>Missing characters in output</td><td>Run <code>vne extract --characters-only</code> first to review extracted characters, then pass with <code>--characters characters.json</code></td></tr>
+<tr><td>Config not loading</td><td>Run <code>vne config show --resolved</code> to see which config layer each value comes from</td></tr>
+</table>
+</section>
+
+<!-- ===== COMMAND REFERENCE ===== -->
+<section id="commands">
+<h2>Command Reference</h2>
+
+<h3><code>vne extract</code></h3>
+<p>Parse novel text into structured story JSON.</p>
+<pre><code>vne extract &lt;INPUT_FILE&gt; [OPTIONS]</code></pre>
+<table>
+<tr><th>Argument / Option</th><th>Description</th></tr>
+<tr><td><code>INPUT_FILE</code></td><td>Path to novel text file (<code>.txt</code>, <code>.md</code>)</td></tr>
+<tr><td><code>-o, --output PATH</code></td><td>Output story.json path (default: <code>./story.json</code>)</td></tr>
+<tr><td><code>--characters-only</code></td><td>Run only the character extraction pre-pass</td></tr>
+<tr><td><code>--characters PATH</code></td><td>Reuse an existing character registry JSON</td></tr>
+<tr><td><code>--config PATH</code></td><td>Project config file override</td></tr>
+<tr><td><code>--max-chapters INT</code></td><td>Override max chapter count</td></tr>
+<tr><td><code>--max-branch-depth INT</code></td><td>Override max branch depth</td></tr>
+<tr><td><code>--dry-run</code></td><td>Show extraction plan without calling the LLM</td></tr>
+<tr><td><code>--verbose / --no-verbose</code></td><td>Enable detailed logging</td></tr>
+</table>
+
+<p><strong>What it does:</strong></p>
+<ol>
+  <li>Reads the input file and detects chapter boundaries</li>
+  <li>Chunks text to fit within the LLM context window (respecting chapter boundaries)</li>
+  <li>Runs a character extraction pre-pass across all chunks, then merges and deduplicates</li>
+  <li>Extracts chapters, scenes, dialogue, narration, and cinematic annotations</li>
+  <li>Detects branching cues (explicit <code>[CHOICE: ...]</code> markers and implicit narrative patterns)</li>
+  <li>Enforces branch depth and choice count limits</li>
+  <li>Validates the output (character references, branch targets, orphaned scenes)</li>
+  <li>Writes <code>story.json</code></li>
+</ol>
+
+<h3><code>vne generate-assets</code></h3>
+<p>Generate images for characters and backgrounds via a pluggable image generation API.</p>
+<pre><code>vne generate-assets &lt;STORY_JSON&gt; [OPTIONS]</code></pre>
+<table>
+<tr><th>Argument / Option</th><th>Description</th></tr>
+<tr><td><code>STORY_JSON</code></td><td>Path to story.json from the extract stage</td></tr>
+<tr><td><code>-o, --output PATH</code></td><td>Output assets directory (default: <code>./assets/</code>)</td></tr>
+<tr><td><code>--manifest PATH</code></td><td>Resume from an existing asset manifest</td></tr>
+<tr><td><code>--characters-only</code></td><td>Generate only character sprites</td></tr>
+<tr><td><code>--backgrounds-only</code></td><td>Generate only backgrounds</td></tr>
+<tr><td><code>--style TEXT</code></td><td>Override image style (e.g., <code>"watercolor"</code>)</td></tr>
+<tr><td><code>--concurrency INT</code></td><td>Max parallel API requests (default: <code>3</code>)</td></tr>
+<tr><td><code>--config PATH</code></td><td>Project config file override</td></tr>
+<tr><td><code>--dry-run</code></td><td>Show what would be generated without calling APIs</td></tr>
+<tr><td><code>--verbose / --no-verbose</code></td><td>Enable detailed logging</td></tr>
+</table>
+
+<p><strong>What it does:</strong></p>
+<ol>
+  <li>Reads story.json and builds asset requests (one per character expression + one per unique background)</li>
+  <li>Deduplicates backgrounds by location and time-of-day</li>
+  <li>Initializes or loads an asset manifest for resume tracking</li>
+  <li>Generates images concurrently with a configurable semaphore bound</li>
+  <li>Saves the manifest after each asset for crash recovery</li>
+  <li>Outputs to <code>assets/characters/</code> and <code>assets/backgrounds/</code></li>
+</ol>
+
+<h3><code>vne assemble</code></h3>
+<p>Assemble story JSON and assets into a ready-to-run VNE project.</p>
+<pre><code>vne assemble &lt;STORY_JSON&gt; --assets &lt;DIR&gt; [OPTIONS]</code></pre>
+<table>
+<tr><th>Argument / Option</th><th>Description</th></tr>
+<tr><td><code>STORY_JSON</code></td><td>Path to story.json from the extract stage</td></tr>
+<tr><td><code>--assets PATH</code></td><td>Assets directory from the generate-assets stage (required)</td></tr>
+<tr><td><code>-o, --output PATH</code></td><td>Output project directory (default: <code>./project/</code>)</td></tr>
+<tr><td><code>--resolution WxH</code></td><td>Game window resolution (e.g., <code>1920x1080</code>)</td></tr>
+<tr><td><code>--title TEXT</code></td><td>Override project title</td></tr>
+<tr><td><code>--cinematic / --no-cinematic</code></td><td>Apply cinematic direction layer (default: on)</td></tr>
+<tr><td><code>--cinematic-tier TEXT</code></td><td><code>"base"</code> or <code>"full"</code> cinematic polish</td></tr>
+<tr><td><code>--validate / --no-validate</code></td><td>Validate output before writing (default: on)</td></tr>
+<tr><td><code>--config PATH</code></td><td>Project config file override</td></tr>
+<tr><td><code>--verbose / --no-verbose</code></td><td>Enable detailed logging</td></tr>
+</table>
+
+<p><strong>What it does:</strong></p>
+<ol>
+  <li>Generates <code>.flow</code> files for every scene using the flow graph compiler</li>
+  <li>Creates an entry flow with fade-in and transition to the first scene</li>
+  <li>Applies cinematic direction (transitions, letterboxing, timing) if enabled</li>
+  <li>Copies and organizes assets into VNE directory layout</li>
+  <li>Generates <code>project.vne</code> manifest and <code>main.lua</code> entry point</li>
+  <li>Validates the assembled project (flow integrity, asset references, entry point)</li>
+</ol>
+
+<h3><code>vne config</code></h3>
+<p>Manage VNE-CLI configuration.</p>
+<pre><code>vne config show              <span class="cmt"># Display resolved config as TOML</span>
+vne config show --resolved   <span class="cmt"># Show with source annotations per key</span>
+vne config init              <span class="cmt"># Create ./vne-cli.toml with defaults</span>
+vne config init --global     <span class="cmt"># Create ~/.vne-cli/config.toml</span></code></pre>
+
+<h3><code>vne validate</code></h3>
+<p>Validate any VNE-CLI intermediate file.</p>
+<pre><code>vne validate story.json         <span class="cmt"># Validate extracted story</span>
+vne validate scene.flow         <span class="cmt"># Validate a flow file</span>
+vne validate project.vne        <span class="cmt"># Validate project manifest</span></code></pre>
+
+<h3><code>vne --version</code></h3>
+<p>Display the installed version of VNE-CLI.</p>
+</section>
+
+<!-- ===== PROVIDER SETUP ===== -->
+<section id="providers">
+<h2>Provider Setup</h2>
+
+<p>VNE-CLI uses a plugin system for LLM and image generation backends. Configure providers in your TOML config file.</p>
+
+<h3>Getting API Keys</h3>
+<table>
+<tr><th>Provider</th><th>Where to Get a Key</th></tr>
+<tr><td>OpenAI (GPT + DALL-E)</td><td><a href="https://platform.openai.com/api-keys">platform.openai.com/api-keys</a></td></tr>
+<tr><td>Anthropic (Claude)</td><td><a href="https://console.anthropic.com/settings/keys">console.anthropic.com/settings/keys</a></td></tr>
+<tr><td>Stability AI (Stable Diffusion)</td><td><a href="https://platform.stability.ai/account/keys">platform.stability.ai/account/keys</a></td></tr>
+</table>
+
+<h3>Setting Environment Variables</h3>
+<pre><code><span class="cmt"># For OpenAI LLM + DALL-E</span>
+export VNE_CLI_OPENAI_API_KEY="sk-..."
+
+<span class="cmt"># For Anthropic</span>
+export VNE_CLI_ANTHROPIC_API_KEY="sk-ant-..."
+
+<span class="cmt"># For Stability AI</span>
+export VNE_CLI_STABILITY_API_KEY="sk-..."</code></pre>
+
+<p>Alternatively, add keys to <code>~/.vne-cli/config.toml</code> under <code>[credentials]</code>:</p>
+<pre><code>[credentials]
+openai_api_key = <span class="str">"sk-..."</span>
+anthropic_api_key = <span class="str">"sk-ant-..."</span>
+stability_api_key = <span class="str">"sk-..."</span></code></pre>
+
+<div class="callout callout--warn">
+<strong>Security note:</strong> Credentials are never read from project-level config (<code>./vne-cli.toml</code>). This is enforced by the config loader. Prefer environment variables over config files for API keys.
+</div>
+
+<h3>OpenAI LLM Provider</h3>
+<p>Uses the OpenAI Chat Completions API.</p>
+<pre><code>[providers.llm]
+package = <span class="str">"vne_cli.providers.llm.openai_provider"</span>
+factory = <span class="str">"create_llm_provider"</span>
+model = <span class="str">"gpt-4o"</span></code></pre>
+<p>Credential: <code>VNE_CLI_OPENAI_API_KEY</code></p>
+<p>Features: Chat Completions API, JSON mode structured output, connection pooling via httpx, error mapping (401/403 to AuthError, 429 to RateLimitError).</p>
+
+<h3>Anthropic LLM Provider</h3>
+<p>Uses the Anthropic Messages API.</p>
+<pre><code>[providers.llm]
+package = <span class="str">"vne_cli.providers.llm.anthropic_provider"</span>
+factory = <span class="str">"create_llm_provider"</span>
+model = <span class="str">"claude-sonnet-4-20250514"</span></code></pre>
+<p>Credential: <code>VNE_CLI_ANTHROPIC_API_KEY</code></p>
+<p>Features: Messages API with x-api-key auth, content block response format, structured output via schema injection.</p>
+
+<h3>DALL-E Image Provider</h3>
+<p>Uses the OpenAI Images API.</p>
+<pre><code>[providers.image]
+package = <span class="str">"vne_cli.providers.image.dalle_provider"</span>
+factory = <span class="str">"create_image_provider"</span>
+model = <span class="str">"dall-e-3"</span></code></pre>
+<p>Credential: <code>VNE_CLI_OPENAI_API_KEY</code> or <code>VNE_CLI_DALLE_API_KEY</code></p>
+<p>Features: DALL-E 2 and 3 support, automatic size snapping (1024x1024, 1024x1792, 1792x1024), base64 response format, quality and style parameters for DALL-E 3.</p>
+
+<h3>Stable Diffusion Image Provider</h3>
+<p>Uses the Stability AI REST API.</p>
+<pre><code>[providers.image]
+package = <span class="str">"vne_cli.providers.image.stable_diffusion_provider"</span>
+factory = <span class="str">"create_image_provider"</span>
+model = <span class="str">"stable-diffusion-xl-1024-v1-0"</span></code></pre>
+<p>Credential: <code>VNE_CLI_STABILITY_API_KEY</code></p>
+<p>Features: text-to-image endpoint, dimension clamping to multiples of 64 (512-2048 range), cfg_scale, steps, and negative prompts.</p>
+</section>
+
+<!-- ===== CUSTOM PROVIDERS ===== -->
+<section id="custom-providers">
+<h2>Custom Providers</h2>
+
+<p>VNE-CLI uses Python <code>Protocol</code> classes for structural subtyping. Your provider package does not need to import from <code>vne-cli</code> -- it only needs to match the interface.</p>
+
+<h3>How the Plugin System Works</h3>
+<ol>
+  <li>You specify a provider in your config TOML (package name + factory function name)</li>
+  <li>VNE-CLI calls <code>importlib.import_module(package)</code> to load your package</li>
+  <li>It calls the factory function with any extra config keys as keyword arguments</li>
+  <li>It verifies the returned object satisfies the protocol via <code>isinstance()</code> (enabled by <code>@runtime_checkable</code>)</li>
+</ol>
+
+<h3>LLMProvider Protocol</h3>
+<pre><code><span class="kw">@runtime_checkable</span>
+<span class="kw">class</span> <span class="typ">LLMProvider</span>(<span class="typ">Protocol</span>):
+    <span class="kw">@property</span>
+    <span class="kw">def</span> <span class="fn">name</span>(self) -> <span class="typ">str</span>: ...
+
+    <span class="kw">async def</span> <span class="fn">complete</span>(
+        self,
+        prompt: <span class="typ">str</span>,
+        *,
+        system: <span class="typ">str</span> | <span class="typ">None</span> = <span class="kw">None</span>,
+        temperature: <span class="typ">float</span> = <span class="num">0.7</span>,
+        max_tokens: <span class="typ">int</span> = <span class="num">4096</span>,
+        response_format: <span class="typ">dict</span>[<span class="typ">str</span>, <span class="typ">Any</span>] | <span class="typ">None</span> = <span class="kw">None</span>,
+    ) -> <span class="typ">str</span>: ...
+
+    <span class="kw">async def</span> <span class="fn">complete_structured</span>(
+        self,
+        prompt: <span class="typ">str</span>,
+        schema: <span class="typ">type</span>,
+        *,
+        system: <span class="typ">str</span> | <span class="typ">None</span> = <span class="kw">None</span>,
+        temperature: <span class="typ">float</span> = <span class="num">0.3</span>,
+    ) -> <span class="typ">Any</span>: ...
+
+    <span class="kw">async def</span> <span class="fn">close</span>(self) -> <span class="typ">None</span>: ...</code></pre>
+
+<h3>ImageProvider Protocol</h3>
+<pre><code><span class="kw">@runtime_checkable</span>
+<span class="kw">class</span> <span class="typ">ImageProvider</span>(<span class="typ">Protocol</span>):
+    <span class="kw">@property</span>
+    <span class="kw">def</span> <span class="fn">name</span>(self) -> <span class="typ">str</span>: ...
+
+    <span class="kw">async def</span> <span class="fn">generate</span>(
+        self,
+        prompt: <span class="typ">str</span>,
+        *,
+        width: <span class="typ">int</span> = <span class="num">1024</span>,
+        height: <span class="typ">int</span> = <span class="num">1024</span>,
+        style: <span class="typ">str</span> | <span class="typ">None</span> = <span class="kw">None</span>,
+        negative_prompt: <span class="typ">str</span> | <span class="typ">None</span> = <span class="kw">None</span>,
+    ) -> <span class="typ">bytes</span>: ...
+
+    <span class="kw">async def</span> <span class="fn">close</span>(self) -> <span class="typ">None</span>: ...</code></pre>
+
+<h3>Custom LLM Provider Example</h3>
+<pre><code><span class="cmt"># my_llm_provider.py</span>
+<span class="kw">import</span> json
+<span class="kw">import</span> httpx
+
+<span class="kw">class</span> <span class="typ">MyLLMProvider</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, api_key: <span class="typ">str</span>, model: <span class="typ">str</span>, base_url: <span class="typ">str</span> = <span class="str">"https://api.example.com"</span>):
+        self._api_key = api_key
+        self._model = model
+        self._client = httpx.AsyncClient(
+            base_url=base_url,
+            headers={<span class="str">"Authorization"</span>: <span class="str">f"Bearer {api_key}"</span>},
+            timeout=<span class="num">120.0</span>,
+        )
+
+    <span class="kw">@property</span>
+    <span class="kw">def</span> <span class="fn">name</span>(self) -> <span class="typ">str</span>:
+        <span class="kw">return</span> <span class="str">f"my-provider/{self._model}"</span>
+
+    <span class="kw">async def</span> <span class="fn">complete</span>(self, prompt, *, system=<span class="kw">None</span>,
+                       temperature=<span class="num">0.7</span>, max_tokens=<span class="num">4096</span>,
+                       response_format=<span class="kw">None</span>) -> <span class="typ">str</span>:
+        payload = {<span class="str">"model"</span>: self._model, <span class="str">"prompt"</span>: prompt,
+                   <span class="str">"temperature"</span>: temperature, <span class="str">"max_tokens"</span>: max_tokens}
+        <span class="kw">if</span> system:
+            payload[<span class="str">"system"</span>] = system
+        response = <span class="kw">await</span> self._client.post(<span class="str">"/v1/completions"</span>, json=payload)
+        response.raise_for_status()
+        <span class="kw">return</span> response.json()[<span class="str">"text"</span>]
+
+    <span class="kw">async def</span> <span class="fn">complete_structured</span>(self, prompt, schema, *,
+                                  system=<span class="kw">None</span>, temperature=<span class="num">0.3</span>):
+        schema_json = json.dumps(schema.model_json_schema(), indent=<span class="num">2</span>)
+        full_system = (system <span class="kw">or</span> <span class="str">""</span>) + <span class="str">f"\n\nRespond with JSON matching:\n{schema_json}"</span>
+        raw = <span class="kw">await</span> self.complete(prompt, system=full_system,
+                                  temperature=temperature,
+                                  response_format={<span class="str">"type"</span>: <span class="str">"json_object"</span>})
+        <span class="kw">return</span> schema.model_validate_json(raw)
+
+    <span class="kw">async def</span> <span class="fn">close</span>(self) -> <span class="typ">None</span>:
+        <span class="kw">await</span> self._client.aclose()
+
+<span class="kw">def</span> <span class="fn">create_llm_provider</span>(*, api_key: <span class="typ">str</span>, model: <span class="typ">str</span> = <span class="str">"default"</span>, **kwargs):
+    <span class="kw">return</span> MyLLMProvider(api_key=api_key, model=model, **kwargs)</code></pre>
+
+<h3>Registering a Custom Provider</h3>
+<pre><code>[providers.llm]
+package = <span class="str">"my_llm_provider"</span>          <span class="cmt"># Python module name (importable)</span>
+factory = <span class="str">"create_llm_provider"</span>      <span class="cmt"># Factory function name</span>
+model = <span class="str">"my-model-v2"</span>                <span class="cmt"># Passed as kwarg to factory</span>
+base_url = <span class="str">"https://my-api.com"</span>      <span class="cmt"># Extra keys passed as **kwargs</span></code></pre>
+
+<p>The <code>package</code> value must be importable via <code>importlib.import_module()</code>:</p>
+<ul>
+  <li>A Python file on your <code>PYTHONPATH</code></li>
+  <li>An installed package (e.g., <code>pip install my-llm-provider</code>)</li>
+  <li>A built-in provider path (e.g., <code>vne_cli.providers.llm.openai_provider</code>)</li>
+</ul>
+
+<h3>Error Types</h3>
+<p>Providers should raise these errors from <code>vne_cli.providers.errors</code> when appropriate:</p>
+<table>
+<tr><th>Error</th><th>When to Raise</th></tr>
+<tr><td><code>ProviderAuthError</code></td><td>API key missing, invalid, or expired (HTTP 401/403)</td></tr>
+<tr><td><code>ProviderRateLimitError</code></td><td>Rate limit exceeded (HTTP 429). Include <code>retry_after</code> if available.</td></tr>
+<tr><td><code>ProviderResponseError</code></td><td>Unexpected response format, server error (HTTP 5xx), or timeout</td></tr>
+<tr><td><code>ProviderNotFoundError</code></td><td>Package not installed or factory function not found</td></tr>
+</table>
+
+<p>VNE-CLI's retry logic uses exponential backoff with jitter: 3 retries, 1s base delay, 30s max delay, respects <code>Retry-After</code> header.</p>
+</section>
+
+<!-- ===== CONFIGURATION ===== -->
+<section id="configuration">
+<h2>Configuration</h2>
+
+<p>VNE-CLI uses layered TOML configuration with this precedence (highest wins):</p>
+<ol>
+  <li><strong>CLI flags</strong></li>
+  <li><strong>Environment variables</strong> (<code>VNE_CLI_*</code> prefix)</li>
+  <li><strong>Project config</strong> (<code>./vne-cli.toml</code> in your working directory)</li>
+  <li><strong>User config</strong> (<code>~/.vne-cli/config.toml</code>)</li>
+  <li><strong>Built-in defaults</strong></li>
+</ol>
+
+<h3>Project Configuration</h3>
+<p>Create a per-project config in your project root:</p>
+<pre><code>vne config init</code></pre>
+
+<p>This creates <code>./vne-cli.toml</code> (safe to commit -- no credentials):</p>
+<pre><code>[project]
+name = <span class="str">"The Crystal Kingdom"</span>
+version = <span class="str">"1.0.0"</span>
+resolution = [<span class="num">1920</span>, <span class="num">1080</span>]
+
+[extraction]
+language = <span class="str">"en"</span>
+max_chapters = <span class="num">30</span>
+max_branch_depth = <span class="num">3</span>
+max_choices_per_branch = <span class="num">3</span>
+protagonist_name = <span class="str">""</span>  <span class="cmt"># Leave empty for auto-detection</span>
+
+[extraction.chunking]
+target_tokens = <span class="num">8000</span>
+overlap_tokens = <span class="num">500</span>
+
+[assets]
+style = <span class="str">"anime"</span>
+background_size = [<span class="num">1920</span>, <span class="num">1080</span>]
+sprite_size = [<span class="num">800</span>, <span class="num">1200</span>]
+output_format = <span class="str">"png"</span>
+
+[assembly]
+default_text_speed = <span class="num">30</span>
+default_transition = <span class="str">"fade"</span>
+transition_duration_ms = <span class="num">500</span>
+
+[cinematic]
+enabled = <span class="kw">true</span>
+tier = <span class="str">"full"</span>  <span class="cmt"># "base" for minimal, "full" for complete</span></code></pre>
+
+<h3>Environment Variable Mapping</h3>
+<p>All config keys map to environment variables via <code>VNE_CLI_</code> + section path in <code>SCREAMING_SNAKE_CASE</code>:</p>
+<table>
+<tr><th>Config Key</th><th>Environment Variable</th></tr>
+<tr><td><code>providers.llm.model</code></td><td><code>VNE_CLI_PROVIDERS_LLM_MODEL</code></td></tr>
+<tr><td><code>extraction.max_branch_depth</code></td><td><code>VNE_CLI_EXTRACTION_MAX_BRANCH_DEPTH</code></td></tr>
+<tr><td><code>assets.style</code></td><td><code>VNE_CLI_ASSETS_STYLE</code></td></tr>
+</table>
+
+<p>Credentials are resolved in order: environment variable, user config file, system keyring (if the <code>keyring</code> package is installed).</p>
+</section>
+
+<!-- ===== ARCHITECTURE ===== -->
+<section id="architecture">
+<h2>Architecture</h2>
+
+<h3>Pipeline Overview</h3>
+
+<div class="pipeline">
+  <div class="pipeline-step">novel.txt<span class="pipeline-label">Input</span></div>
+  <div class="pipeline-arrow">&#8594;</div>
+  <div class="pipeline-step">vne extract<span class="pipeline-label">story.json</span></div>
+  <div class="pipeline-arrow">&#8594;</div>
+  <div class="pipeline-step">vne generate-assets<span class="pipeline-label">assets/</span></div>
+  <div class="pipeline-arrow">&#8594;</div>
+  <div class="pipeline-step">vne assemble<span class="pipeline-label">project/</span></div>
+</div>
+
+<p>Each stage is independent and resumable. You can re-run any stage without re-running previous ones.</p>
+
+<h3>Module Structure</h3>
+<pre><code>src/vne_cli/
+  cli.py                 <span class="cmt"># Typer CLI, all command definitions</span>
+  commands/
+    extract.py           <span class="cmt"># Extract pipeline orchestration</span>
+    generate_assets.py   <span class="cmt"># Asset generation orchestration</span>
+    assemble.py          <span class="cmt"># Project assembly orchestration</span>
+  config/
+    loader.py            <span class="cmt"># Layered TOML config loading</span>
+    schema.py            <span class="cmt"># Config Pydantic models</span>
+    credentials.py       <span class="cmt"># Credential resolution (env, config, keyring)</span>
+  extraction/
+    chunker.py           <span class="cmt"># Smart text chunking for LLM context windows</span>
+    character_pass.py    <span class="cmt"># Character registry extraction</span>
+    structure_pass.py    <span class="cmt"># Chapter/scene/dialogue extraction</span>
+    branch_detector.py   <span class="cmt"># Branch detection and enforcement</span>
+    validator.py         <span class="cmt"># Extraction output validation</span>
+  assets/
+    pipeline.py          <span class="cmt"># Asset generation orchestration</span>
+    prompt_builder.py    <span class="cmt"># Image prompt construction</span>
+    manifest.py          <span class="cmt"># Asset manifest read/write</span>
+    downloader.py        <span class="cmt"># Image saving and format conversion</span>
+  assembly/
+    project_builder.py   <span class="cmt"># project.vne generation</span>
+    flow_writer.py       <span class="cmt"># .flow file generation</span>
+    asset_organizer.py   <span class="cmt"># Asset copying and organization</span>
+    validator.py         <span class="cmt"># Assembled project validation</span>
+  flow/
+    nodes.py             <span class="cmt"># 50 VNE node type definitions</span>
+    pins.py              <span class="cmt"># 13 pin type definitions</span>
+    graph.py             <span class="cmt"># Flow graph construction</span>
+    serializer.py        <span class="cmt"># Graph to .flow JSON</span>
+    scene_compiler.py    <span class="cmt"># Scene to flow graph compilation</span>
+    orchestrator.py      <span class="cmt"># Multi-scene flow orchestration</span>
+    cinematic.py         <span class="cmt"># Cinematic direction layer</span>
+  providers/
+    base.py              <span class="cmt"># LLMProvider and ImageProvider protocols</span>
+    registry.py          <span class="cmt"># Provider loading from config</span>
+    errors.py            <span class="cmt"># Error hierarchy</span>
+    llm/                 <span class="cmt"># Built-in LLM providers</span>
+    image/               <span class="cmt"># Built-in image providers</span>
+  schemas/               <span class="cmt"># Pydantic models for all data formats</span>
+  utils/                 <span class="cmt"># Logging, retry, path helpers</span></code></pre>
+
+<h3>Dependency Flow</h3>
+<p>Dependencies flow inward: <code>cli -> commands -> {extraction, assets, assembly} -> {providers, flow, schemas} -> utils</code>. No cycles. <code>schemas/</code> and <code>providers/</code> never import from <code>extraction/</code>, <code>assets/</code>, or <code>assembly/</code>.</p>
+
+<h3>Key Features</h3>
+<ul>
+  <li><strong>Three-stage pipeline</strong>: Extract, generate assets, assemble -- each stage independent and resumable</li>
+  <li><strong>Pluggable providers</strong>: Use OpenAI, Anthropic, DALL-E, Stable Diffusion, or write your own</li>
+  <li><strong>Smart text chunking</strong>: Respects chapter boundaries with context overlap across chunks</li>
+  <li><strong>Character extraction</strong>: Automatic identification, deduplication, and expression variant detection</li>
+  <li><strong>Branch detection</strong>: Explicit choice markers and implicit narrative branching cues</li>
+  <li><strong>Cinematic direction</strong>: Automatic transitions, letterboxing, and timing from prose cues</li>
+  <li><strong>Asset resume</strong>: Image generation tracks progress per-asset; resume after failures</li>
+  <li><strong>Layered configuration</strong>: Global user config, per-project config, environment variables, and CLI flags</li>
+</ul>
+</section>
+
+<!-- ===== FLOW FORMAT ===== -->
+<section id="flow-format">
+<h2>Flow Format</h2>
+
+<p>The <code>.flow</code> file format is what VoidNovelEngine uses to define scene logic. Each <code>.flow</code> file is a UTF-8 encoded JSON object containing nodes (operations) connected by links (execution and data flow).</p>
+
+<h3>Top-Level Structure</h3>
+<pre><code>{
+  <span class="str">"max_uid"</span>: <span class="num">42</span>,
+  <span class="str">"node_pool"</span>: [ ... ],
+  <span class="str">"link_pool"</span>: [ ... ],
+  <span class="str">"is_open"</span>: <span class="kw">true</span>
+}</code></pre>
+
+<table>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td><code>max_uid</code></td><td>integer</td><td>Highest ID assigned. Next entity gets <code>max_uid + 1</code>.</td></tr>
+<tr><td><code>node_pool</code></td><td>array</td><td>Array of node objects.</td></tr>
+<tr><td><code>link_pool</code></td><td>array</td><td>Array of link objects connecting pins between nodes.</td></tr>
+<tr><td><code>is_open</code></td><td>boolean</td><td>Whether this flow tab is open in the editor.</td></tr>
+</table>
+
+<h3>Node Types (Summary)</h3>
+
+<h4>Control Flow</h4>
+<table>
+<tr><th>Type ID</th><th>Description</th></tr>
+<tr><td><code>entry</code></td><td>Flow starting point (one per flow)</td></tr>
+<tr><td><code>branch</code></td><td>Conditional branch (true/false)</td></tr>
+<tr><td><code>loop</code></td><td>Repeating execution</td></tr>
+<tr><td><code>switch_scene</code></td><td>Jump to another flow file</td></tr>
+</table>
+
+<h4>Presentation</h4>
+<table>
+<tr><th>Type ID</th><th>Description</th></tr>
+<tr><td><code>delay</code></td><td>Pause for N seconds</td></tr>
+<tr><td><code>wait_interaction</code></td><td>Wait for click/spacebar</td></tr>
+<tr><td><code>switch_background</code></td><td>Change background image</td></tr>
+<tr><td><code>add_foreground</code></td><td>Add character/sprite</td></tr>
+<tr><td><code>remove_foreground</code></td><td>Remove character/sprite</td></tr>
+<tr><td><code>move_foreground</code></td><td>Animate sprite movement</td></tr>
+<tr><td><code>show_letterboxing</code></td><td>Show cinematic bars</td></tr>
+<tr><td><code>hide_letterboxing</code></td><td>Hide cinematic bars</td></tr>
+<tr><td><code>show_subtitle</code></td><td>Display subtitle text</td></tr>
+<tr><td><code>show_dialog_box</code></td><td>Show dialogue box</td></tr>
+<tr><td><code>hide_dialog_box</code></td><td>Hide dialogue box</td></tr>
+<tr><td><code>transition_fade_in</code></td><td>Fade in from black</td></tr>
+<tr><td><code>transition_fade_out</code></td><td>Fade to black</td></tr>
+<tr><td><code>show_choice_button</code></td><td>Show up to 5 choice buttons</td></tr>
+</table>
+
+<h4>Audio</h4>
+<table>
+<tr><th>Type ID</th><th>Description</th></tr>
+<tr><td><code>play_audio</code></td><td>Play audio file</td></tr>
+<tr><td><code>stop_audio</code></td><td>Stop specific channel</td></tr>
+<tr><td><code>stop_all_audio</code></td><td>Stop all audio</td></tr>
+</table>
+
+<h3>Common Patterns</h3>
+
+<h4>Dialogue Sequence</h4>
+<pre><code>entry -> show_dialog_box(<span class="str">"Elena"</span>, <span class="str">"Hello."</span>) -> show_dialog_box(<span class="str">"Marcus"</span>, <span class="str">"Hi there."</span>)</code></pre>
+
+<h4>Branching Choice</h4>
+<pre><code>entry -> show_choice_button(<span class="str">"Option A"</span>, <span class="str">"Option B"</span>, <span class="str">""</span>, <span class="str">""</span>, <span class="str">""</span>)
+           |                    |
+           v                    v
+     save_global          save_global
+           |                    |
+           +-----> merge_flow &lt;-+
+                      |
+                      v
+                  (continue)</code></pre>
+
+<h4>Scene Transition</h4>
+<pre><code>transition_fade_out(<span class="num">1.0</span>) -> switch_scene(<span class="str">"ch_001_sc_002"</span>)</code></pre>
+
+<h4>Cinematic Narration</h4>
+<pre><code>show_letterboxing(<span class="num">200</span>, <span class="num">1.5</span>) -> show_subtitle(<span class="str">"The dust settled..."</span>) -> hide_subtitle -> hide_letterboxing(<span class="num">1.5</span>)</code></pre>
+
+<h3>Link Direction (Important)</h3>
+<p>In the VNE link format, field names describe the <em>link's</em> perspective, not the pin's:</p>
+<ul>
+  <li><code>input_pin_id</code> = the pin feeding data <strong>into</strong> the link = a source node's <strong>output</strong> pin</li>
+  <li><code>output_pin_id</code> = the pin receiving data <strong>out of</strong> the link = a destination node's <strong>input</strong> pin</li>
+</ul>
+<p>Data flows from <code>input_pin_id</code> to <code>output_pin_id</code>. The naming is the opposite of what you might expect.</p>
+</section>
+
+<!-- ===== SUPPORTED FORMATS ===== -->
+<section id="formats">
+<h2>Supported Input Formats</h2>
+<table>
+<tr><th>Format</th><th>Extension</th><th>Notes</th></tr>
+<tr><td>Plain text</td><td><code>.txt</code></td><td>Most common. One continuous narrative.</td></tr>
+<tr><td>Markdown</td><td><code>.md</code></td><td>Chapter headers detected via <code>#</code> headings.</td></tr>
+</table>
+
+<p>Explicit branching markup is supported in any format:</p>
+<pre><code>[CHOICE: What should Elena do?]
+[OPTION: Read the letter immediately]
+[OPTION: Hide it and read later]</code></pre>
+
+<p>The parser also detects implicit branching cues from narrative patterns (e.g., "faced with a choice", "what should X do?").</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>VNE-CLI -- MIT License -- <a href="https://github.com/andywxy1/VNE-CLI">GitHub Repository</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
