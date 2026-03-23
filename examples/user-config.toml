@@ -1,0 +1,24 @@
+# VNE-CLI User Configuration
+# Copy this to: ~/.vne-cli/config.toml
+#
+# This file stores your global defaults and provider credentials.
+# It should NOT be committed to version control.
+
+[providers.llm]
+package = "vne_cli_openai"        # pip install vne-cli-openai
+factory = "create_llm_provider"
+model = "gpt-4o"
+
+[providers.image]
+package = "vne_cli_dalle"         # pip install vne-cli-dalle
+factory = "create_image_provider"
+model = "dall-e-3"
+
+[credentials]
+# Prefer environment variables over config values:
+#   export VNE_CLI_OPENAI_API_KEY="sk-..."
+#   export VNE_CLI_DALLE_API_KEY="sk-..."
+#
+# Config values here are used as fallback only.
+# openai_api_key = ""
+# dalle_api_key = ""

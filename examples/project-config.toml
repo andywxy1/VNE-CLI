@@ -1,0 +1,36 @@
+# VNE-CLI Project Configuration
+# Copy this to your project root as: vne-cli.toml
+#
+# This file is safe to commit to version control.
+# Credentials are intentionally excluded (loaded from user config or env vars).
+
+[project]
+name = "The Crystal Kingdom"
+version = "1.0.0"
+resolution = [1920, 1080]
+
+[extraction]
+language = "en"
+max_chapters = 30
+max_branch_depth = 3
+max_choices_per_branch = 3
+protagonist_name = ""             # Leave empty for auto-detection
+
+[extraction.chunking]
+target_tokens = 8000
+overlap_tokens = 500
+
+[assets]
+style = "anime"
+background_size = [1920, 1080]
+sprite_size = [800, 1200]
+output_format = "png"
+
+[assembly]
+default_text_speed = 30
+default_transition = "fade"
+transition_duration_ms = 500
+
+[cinematic]
+enabled = true
+tier = "full"                     # "base" for minimal, "full" for complete
